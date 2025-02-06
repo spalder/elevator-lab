@@ -7,7 +7,7 @@ LDFLAGS     = -fsanitize=address
 EXCLUDE     = '*test*'
 
 
-SOURCEDIR = source
+SOURCEDIR = src
 OBJECTDIR = build
 
 SOURCES := $(patsubst $(SOURCEDIR)/%, %, $(shell find $(SOURCEDIR) -name '*.c'  ! -name $(EXCLUDE)  ! -path $(EXCLUDE)))
