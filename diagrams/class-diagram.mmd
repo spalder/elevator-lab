@@ -1,29 +1,25 @@
 classDiagram
-    class Elevator {
-        -MotorDirection currentDirection
-        -int currentFloor
-        -bool doorOpen
-        -bool stopButtonPressed
-        -bool obstruction
-        +void init()
-        +void setMotorDirection(MotorDirection)
-        +void setButtonLamp(int floor, ButtonType, int value)
-        +void setFloorIndicator(int floor)
-        +void setDoorOpenLamp(int value)
-        +void setStopLamp(int value)
-        +bool isCallButtonPressed(int floor, ButtonType)
-        +int getFloorSensor()
-        +bool isStopButtonPressed()
-        +bool hasObstruction()
+    class elevio {
+        -int sockfd
+        -phtread_mutex_t sockmtx
+        +void elevio_init()
+        +void elevio_motorDirection(MotorDirection)
+        +void elevio_buttonLamp(int floor, ButtonType, int value)
+        +void elevio_floorIndicator(int floor)
+        +void elevio_doorOpenLamp(int value)
+        +void elevio_stopLamp(int value)
+        +int elevio_callButton(int floor, ButtonType)
+        +int elevio_floorSensor()
+        +int elevio_stopButton()
+        +int elevio_obstruction()
     }
 
-    class ElevatorController {
-        -Elevator elevator
-        +void run()
-        -void moveToFloor(int floor)
-        -void handleButtonPress()
-        -void handleStopButton()
-        -void handleObstruction()
+    class elevator_control {
+        -ElevatorState current_state    
+        -int current_floor
+        +void elevator_init()
+        +void elevator_update()
+        +void elevator_move()
     }
 
     class ConfigLoader {
