@@ -5,4 +5,7 @@ static int duration;
 
 void timer_start(int seconds);
 
-void timer_stop();
+int timer_stop()
+{
+    return (time(NULL) - start_time) >= duration;
+}
