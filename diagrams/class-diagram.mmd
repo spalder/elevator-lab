@@ -1,0 +1,54 @@
+classDiagram
+    class Elevator {
+        -MotorDirection currentDirection
+        -int currentFloor
+        -bool doorOpen
+        -bool stopButtonPressed
+        -bool obstruction
+        +void init()
+        +void setMotorDirection(MotorDirection)
+        +void setButtonLamp(int floor, ButtonType, int value)
+        +void setFloorIndicator(int floor)
+        +void setDoorOpenLamp(int value)
+        +void setStopLamp(int value)
+        +bool isCallButtonPressed(int floor, ButtonType)
+        +int getFloorSensor()
+        +bool isStopButtonPressed()
+        +bool hasObstruction()
+    }
+
+    class ElevatorController {
+        -Elevator elevator
+        +void run()
+        -void moveToFloor(int floor)
+        -void handleButtonPress()
+        -void handleStopButton()
+        -void handleObstruction()
+    }
+
+    class ConfigLoader {
+        +void loadConfig(string filename, ValueCases cases)
+        +ValueCase createValueCase(string key, void* var, string format)
+        +EnumCase createEnumCase(string key, void* var, EnumMatchCases matchCases)
+    }
+
+    %% Enums
+    class MotorDirection {
+        <<enumeration>>
+        DIRN_DOWN = -1
+        DIRN_STOP = 0
+        DIRN_UP = 1
+    }
+
+    class ButtonType {
+        <<enumeration>>
+        BUTTON_HALL_UP = 0
+        BUTTON_HALL_DOWN = 1
+        BUTTON_CAB = 2
+    }
+
+    %% Relationships
+    ElevatorController --> Elevator : uses
+    ElevatorController --> ConfigLoader : uses
+    Elevator --> MotorDirection : uses
+    Elevator --> ButtonType : uses
