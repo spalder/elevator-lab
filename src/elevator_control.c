@@ -26,40 +26,62 @@ void elevator_init()
     }
 
     elevio_floorIndicator(elevator.current_floor);
-}
-
-void elevator_update()
-{
-    switch (current_state)
-    {
-        case IDLE:
-
-        case MOVING:
-            if (elevio_floorSensor() != -1)
-            {
-                current_floor = elevio_floorSensor();
-                elevio_floorIndicator(current_floor);
-                if (/* <should stop> */)
-                {
-                    elevio_motorDirection(DIRN_STOP);
-                    timer_start(3);
-                    current_state = DOOR_OPEN;
-                }
-            }
-            break;
-
-        case DOOR_OPEN:
-            if (timer_stopped())
-            {
-                elevio_doorOpenLamp()
-            }
-        case STOPPED:
-            
-    }
+    printf("Elevator initialized at floor %d\n", elevator.current_floor);
 }
 
 void elevator_move()
 {
-    int next_floor = /* <get next floor request from algo> */;
-    next_floor > current_floor ? elevio_motorDirection(DIRN_UP) : elevio_motorDirection(DIRN_DOWN);
+    int floor = elevio_floorSensor();
+    if (floor != -1)
+    {
+        elevator.current_floor = floor;
+        elevio_floorIndicator(elevator.current_floor);
+        printf("Elevator reached floor %d\n", elevator.current_floor);
+
+        if (elevator.current_floor == elevator.target_floor)
+        {
+            elevio_motorDirection(DIRN_STOP);
+            elevator.state = DOOR_OPEN;
+            elevator.door_open = 1;
+            elevio_doorOpenLamp(1);
+            sleep(3);
+            elevator.door_open = 0;
+            elevio_doorOpenLamp(0);
+            elevator.state = IDLE;
+            elevator.target_floor = -1;
+        }
+    }
+
+    if (elevio_stopButton())
+    {
+        printf("Emergency stop button pressed\n");
+        elevio_motorDirection(DIRN_STOP);
+        elevator.state = STOPPED;
+        elevio_stopLamp(1);
+
+        /* Clear all orders in queue... */
+
+        while (elevio_stopButton())
+        {
+            usleep(100000);
+        }
+
+        elevio_stopLamp(0);
+        elevator.state = IDLE;
+        elevator.target_floor = -1;
+    }
+
+    if (elevio_obstruction())
+    {
+        printf("Obstruction detected\n");
+        elevio_motorDirection(DIRN_STOP);
+        elevator.state = STOPPED;
+        elevio_doorOpenLamp(1);
+        while (elevio_obstruction())
+        {
+            usleep(100000);
+        }
+        sleep(3);
+        elevio_doorOpenLamp(0);
+    }
 }
