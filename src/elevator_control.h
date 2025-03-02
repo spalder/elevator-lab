@@ -1,19 +1,32 @@
-#pragma once
+#ifndef ELEVATOR_CONTROL_H
+#define ELEVATOR_CONTROL_H
 
 #include "driver/elevio.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 typedef enum {
     IDLE,
-    MOVING,
+    MOVING_UP,
+    MOVING_DOWN,
     DOOR_OPEN,
     STOPPED
 } ElevatorState;
 
-static ElevatorState current_state;
-static int current_floor;
+typedef struct {
+    ElevatorState state;
+    int current_floor;
+    int target_floor;
+    int door_open;
+} Elevator;
+
+Elevator elevator;
 
 void elevator_init();
 
 void elevator_update();
 
-voie elevator_move();
+void elevator_move();
+
+#endif // ELEVATOR_CONTROL_H
