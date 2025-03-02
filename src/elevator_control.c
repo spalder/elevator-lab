@@ -1,12 +1,31 @@
 #include "elevator_control.h"
 
-current_floor = -1;
-current_state = IDLE;
-
 void elevator_init()
 {
     elevio_init();
-    current_state = IDLE;
+    printf("Initializing elevator\n");
+
+    elevator.state = IDLE;
+    elevator.current_floor = elevio_floorSensor();
+    elevator.target_floor = -1;
+    elevator.door_open = 0;
+
+    if (elevator.current_floor == -1)
+    {
+        /* Undefined initial state */
+        elevio_motorDirection(DIRN_DOWN);
+        elevator.state = MOVING_DOWN;
+        
+        /* Wait for elevator to reach known floor */
+        while ((elevator.current_floor = elevio_floorSensor()) == -1)
+        {
+            usleep(100000);
+        }
+
+        elevio_motorDirection(DIRN_STOP);
+    }
+
+    elevio_floorIndicator(elevator.current_floor);
 }
 
 void elevator_update()
