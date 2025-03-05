@@ -2,6 +2,7 @@
 #define ELEVATOR_CONTROL_H
 
 #include "driver/elevio.h"
+#include "timer.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
