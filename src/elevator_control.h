@@ -29,4 +29,8 @@ void elevator_update();
 
 void elevator_move();
 
+void handle_emergency_stop();
+
+void handle_obstruction();
+
 #endif // ELEVATOR_CONTROL_H
