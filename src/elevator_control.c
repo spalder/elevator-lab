@@ -85,3 +85,44 @@ void elevator_move()
         elevio_doorOpenLamp(0);
     }
 }
+
+void elevator_update(int next_target_floor)
+{
+    if (next_target_floor == -1 || elevator.state == STOPPED) 
+    {
+        return;
+    }
+
+    if (elevator.state == IDLE || (elevator.current_floor != -1 && elevator.current_floor == elevator.target_floor)) 
+    {
+        elevator.target_floor = next_target_floor;
+        printf("New target floor: %d\n", elevator.target_floor);
+        
+        if (elevator.current_floor == elevator.target_floor) 
+        {
+            elevator.state = DOOR_OPEN;
+            elevator.door_open = 1;
+            elevio_doorOpenLamp(1);
+            sleep(3);
+            elevator.door_open = 0;
+            elevio_doorOpenLamp(0);
+            elevator.state = IDLE;
+            elevator.target_floor = -1;
+        } 
+        else if (elevator.current_floor != -1) 
+        {
+            if (elevator.target_floor > elevator.current_floor) 
+            {
+                elevio_motorDirection(DIRN_UP);
+                elevator.state = MOVING_UP;
+                printf("Moving UP to floor %d\n", elevator.target_floor);
+            } 
+            else 
+            {
+                elevio_motorDirection(DIRN_DOWN);
+                elevator.state = MOVING_DOWN;
+                printf("Moving DOWN to floor %d\n", elevator.target_floor);
+            }
+        }
+    }
+}
