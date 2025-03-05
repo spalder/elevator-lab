@@ -22,8 +22,8 @@ typedef struct {
     int door_open;
 } Elevator;
 
-Elevator elevator;
-
+/**
+ * @brief Initialize the elevator.
 void elevator_init();
 
 void elevator_update();

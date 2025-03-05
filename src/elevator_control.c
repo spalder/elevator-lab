@@ -1,6 +1,6 @@
 #include "elevator_control.h"
 
-elevator = {
+Elevator elevator = {
     .state = IDLE,
     .current_floor = -1,
     .target_floor = -1,
