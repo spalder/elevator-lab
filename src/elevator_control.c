@@ -1,5 +1,12 @@
 #include "elevator_control.h"
 
+elevator = {
+    .state = IDLE,
+    .current_floor = -1,
+    .target_floor = -1,
+    .door_open = 0
+};
+
 void elevator_init()
 {
     elevio_init();
