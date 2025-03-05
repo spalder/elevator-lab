@@ -1,6 +1,7 @@
 #include "timer.h"
 
-duration = 0;
+static time_t start_time;
+static int duration = 0;
 
 void timer_start(int seconds)
 {
