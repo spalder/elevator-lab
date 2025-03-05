@@ -122,14 +122,54 @@ void elevator_update(int next_target_floor)
             {
                 elevio_motorDirection(DIRN_UP);
                 elevator.state = MOVING_UP;
-                printf("Moving UP to floor %d\n", elevator.target_floor);
+                printf("Moving up to floor %d\n", elevator.target_floor);
             } 
             else 
             {
                 elevio_motorDirection(DIRN_DOWN);
                 elevator.state = MOVING_DOWN;
-                printf("Moving DOWN to floor %d\n", elevator.target_floor);
+                printf("Moving down to floor %d\n", elevator.target_floor);
             }
         }
     }
+}
+
+void handle_emergency_stop()
+{
+    printf("Emergency stop button pressed\n");
+    elevio_motorDirection(DIRN_STOP);
+    elevator.state = STOPPED;
+    elevio_stopLamp(1);
+
+    if (elevator.current_floor != -1) {
+        elevator.door_open = 1;
+        elevio_doorOpenLamp(1);
+    }
+
+    while (elevio_stopButton()) {
+        usleep(100000);
+    }
+
+    elevio_stopLamp(0);
+    
+    if (elevator.current_floor != -1) {
+        timer_start(3);
+    } else {
+        elevator.state = IDLE;
+        elevator.target_floor = -1;
+    }
+}
+
+void handle_obstruction()
+{
+    printf("Obstruction detected, door held open\n");
+    
+    while (elevio_obstruction()) {
+        elevator.door_open = 1;
+        elevio_doorOpenLamp(1);
+        usleep(100000);
+    }
+    
+    printf("Obstruction cleared, door closing in 3 seconds\n");
+    timer_start(3);
 }
