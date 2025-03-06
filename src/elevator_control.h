@@ -57,4 +57,6 @@ void handle_emergency_stop();
  */
 void handle_obstruction();
 
+void clear_floor_button_lamps(int floor);
+
 #endif // ELEVATOR_CONTROL_H

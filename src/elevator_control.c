@@ -57,11 +57,14 @@ void elevator_move()
 
     if (elevator.current_floor == elevator.target_floor && 
        (elevator.state == MOVING_UP || elevator.state == MOVING_DOWN)) {
+        elevio_floorIndicator(elevator.current_floor);
         elevio_motorDirection(DIRN_STOP);
         elevator.state = DOOR_OPEN;
         elevator.door_open = 1;
         elevio_doorOpenLamp(1);
         printf("Arrived at target floor %d, door opening\n", elevator.current_floor);
+
+        clear_floor_button_lamps(elevator.current_floor);
         
         timer_start(3);
         return;
@@ -76,8 +79,15 @@ void elevator_move()
     }
 }
 
+/* Remove input parameter */
 void elevator_update(int next_target_floor)
 {
+    /* int new_target = get_request(elevator.current_floor, elevator.taret_floor) */
+
+    /* Check for new optimal target next floor */
+    /* If new target floor = -1, continue as planned earlier */
+    /* If new target floor = something else, switch path to this new floor */
+
     if (next_target_floor == -1 || elevator.state == STOPPED) 
     {
         return;
@@ -93,6 +103,7 @@ void elevator_update(int next_target_floor)
             elevator.state = DOOR_OPEN;
             elevator.door_open = 1;
             elevio_doorOpenLamp(1);
+            clear_floor_button_lamps(elevator.current_floor);
             sleep(3);
             elevator.door_open = 0;
             elevio_doorOpenLamp(0);
@@ -123,6 +134,10 @@ void handle_emergency_stop()
     elevio_motorDirection(DIRN_STOP);
     elevator.state = STOPPED;
     elevio_stopLamp(1);
+
+    for (int f = 0; f < N_FLOORS; f++) {
+        clear_floor_button_lamps(f);
+    }
 
     if (elevator.current_floor != -1) {
         elevator.door_open = 1;
@@ -155,4 +170,17 @@ void handle_obstruction()
     
     printf("Obstruction cleared, door closing in 3 seconds\n");
     timer_start(3);
+}
+
+void clear_floor_button_lamps(int floor)
+{
+    for (int b = 0; b < N_BUTTONS; b++) 
+    {
+        if ((floor == 0 && b == BUTTON_HALL_DOWN) || 
+            (floor == N_FLOORS - 1 && b == BUTTON_HALL_UP)) 
+        {
+            continue;
+        }
+        elevio_buttonLamp(floor, b, 0);
+    }
 }
