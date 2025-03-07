@@ -41,4 +41,5 @@ int request_handler(int current_floor, int target_floor) {
         }
     }
 
+    return -1;
 }
