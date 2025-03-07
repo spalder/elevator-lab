@@ -1,5 +1,7 @@
 #include "status.h"
 
+int status[N_FLOORS][N_BUTTONS];
+
 void status_init() {
     for (int i = 0; i < N_FLOORS; i++) {
         for (int j = 0; j < N_BUTTONS; j++) {
