@@ -13,7 +13,7 @@ void status_set() {
     for (int floor = 0; floor < N_FLOORS; floor++) {
         for (int button = 0; button < N_BUTTONS; button++) {
             a = elevio_callButton(floor, button);
-            status[i][j] = a;
+            status[floor][button] = a;
             elevio_buttonLamp(floor, button, a);
         }
     }
