@@ -57,4 +57,12 @@ void handle_emergency_stop();
  */
 void handle_obstruction();
 
+/**
+ * @brief Clear the floor button lamps.
+ * @details Clear the floor button lamps for a given floor.
+ * @param[in] floor 
+ * @return void
+ */
+void clear_floor_button_lamps(int floor);
+
 #endif // ELEVATOR_CONTROL_H

@@ -1,5 +1,7 @@
 #include "status.h"
 
+int status[N_FLOORS][N_BUTTONS];
+
 void status_init() {
     for (int i = 0; i < N_FLOORS; i++) {
         for (int j = 0; j < N_BUTTONS; j++) {
@@ -13,7 +15,7 @@ void status_set() {
     for (int floor = 0; floor < N_FLOORS; floor++) {
         for (int button = 0; button < N_BUTTONS; button++) {
             a = elevio_callButton(floor, button);
-            status[i][j] = a;
+            status[floor][button] = a;
             elevio_buttonLamp(floor, button, a);
         }
     }

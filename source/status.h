@@ -7,7 +7,7 @@
 // up_light | down_light | cab_light
 
 
-int status[4][3];
+extern int status[N_FLOORS][N_BUTTONS];
 
 void status_init();
 void status_set();
