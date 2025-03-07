@@ -1,7 +1,7 @@
 #include "request_handler.h"
 
 int request_handler(int current_floor, int target_floor) {
-    if (current_floor >= N_FLOORS || target_floor >= N_FlOORS) {
+    if (current_floor >= N_FLOORS || target_floor >= N_FLOORS) {
         return -1;
     }
     if (current_floor == -1 || target_floor == -1) {
