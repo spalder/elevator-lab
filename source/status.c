@@ -11,12 +11,19 @@ void status_init() {
 }
 
 void status_set() {
-    int a;
     for (int floor = 0; floor < N_FLOORS; floor++) {
         for (int button = 0; button < N_BUTTONS; button++) {
-            a = elevio_callButton(floor, button);
-            status[floor][button] = a;
-            elevio_buttonLamp(floor, button, a);
-        }
+            if ((floor == 0 && button == BUTTON_HALL_DOWN) ||
+                (floor == N_FLOORS - 1 && button == BUTTON_HALL_UP)) {
+                continue;
+            }
+
+            int button_pressed = elevio_callButton(floor, button);
+            if (button_pressed)
+            {
+                status[floor][button] = button_pressed;
+                elevio_buttonLamp(floor, button, button_pressed);
+            }
+       }
     }
 }
