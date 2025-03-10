@@ -179,5 +179,7 @@ void clear_floor_button_lamps(int floor)
             continue;
         }
         elevio_buttonLamp(floor, b, 0);
+
+        status[floor][b] = 0;
     }
 }
