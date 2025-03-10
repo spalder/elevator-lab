@@ -17,6 +17,8 @@ void elevator_init()
     elevator.target_floor = -1;
     elevator.door_open = 0;
 
+    status_init();
+
     if (elevator.current_floor == -1)
     {
         /* Undefined initial state */
@@ -48,7 +50,7 @@ void elevator_move()
         return;
     }
 
-    int floor = elevio_floorSensor();
+    const int floor = elevio_floorSensor();
     if (floor != -1 && floor != elevator.current_floor) {
         elevator.current_floor = floor;
         elevio_floorIndicator(elevator.current_floor);
@@ -79,8 +81,10 @@ void elevator_move()
     }
 }
 
-void elevator_update(int next_target_floor)
+void elevator_update()
 {
+    const int next_target_floor = request_handler(elevator.current_floor, elevator.target_floor);
+
     if (next_target_floor == -1 || elevator.state == STOPPED) 
     {
         return;

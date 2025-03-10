@@ -2,6 +2,7 @@
 #define ELEVATOR_CONTROL_H
 
 #include "driver/elevio.h"
+#include "request_handler.h"
 #include "timer.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -38,10 +39,9 @@ void elevator_move();
 /**
  * @brief Update the elevator.
  * @details Update the elevator state based on the next target floor.
- * @param[in] next_target_floor 
  * @return void
  */
-void elevator_update(int next_target_floor);
+void elevator_update();
 
 /**
  * @brief Handle an emergency stop.
