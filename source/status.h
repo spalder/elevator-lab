@@ -1,4 +1,5 @@
-#pragma once
+#ifndef STATUS_H
+#define STATUS_H
 
 #include "driver/elevio.h"
 
@@ -11,3 +12,5 @@ extern int status[N_FLOORS][N_BUTTONS];
 
 void status_init();
 void status_set();
+
+#endif // STATUS_H
