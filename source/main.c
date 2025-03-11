@@ -12,17 +12,9 @@ int main() {
     elevator_init();
 
     while (!elevio_stopButton()) {
-        int next_target = -1;
-        for (int f = 0; f < N_FLOORS; f++) {
-            for (int b = 0; b < N_BUTTONS; b++) {
-                if (elevio_callButton(f, b)) {
-                    elevio_buttonLamp(f, b, 1);
-                    next_target = f;
-                }
-            }
-        }
+        status_set();
 
-        elevator_update(next_target);
+        elevator_update();
         
         elevator_move();
         
