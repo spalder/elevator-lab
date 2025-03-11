@@ -3,7 +3,7 @@
 
 #include <time.h>
 
-void timer_start(int seconds);
+void timer_start(int duration_seconds);
 
 int timer_stopped();
 

@@ -1,15 +1,13 @@
 #include "timer.h"
 
-static time_t start_time;
-static int duration = 0;
+static time_t timer_end_time;
 
-void timer_start(int seconds)
+void timer_start(int duration_seconds)
 {
-    start_time = time(NULL);
-    duration = seconds;
+    timer_end_time = time(NULL) + duration_seconds;
 }
 
 int timer_stopped()
 {
-    return (time(NULL) - start_time >= duration);
+    return time(NULL) >= timer_end_time;
 }
