@@ -1,12 +1,10 @@
 #include "request_handler.h"
 
-int request_handler(int current_floor, int target_floor) {
-    printf("Request handler called\n");
-    printf("Current floor: %d, Target floor: %d\n", current_floor, target_floor);
-
+int request_handler(int current_floor, int target_floor) 
+{
     if ((current_floor >= N_FLOORS && current_floor != -1) || (target_floor >= N_FLOORS && target_floor != -1)) 
     {
-        printf("Invalid floor, returning -1 from request handler\n");
+        printf("Invalid floor\n");
         return -1;
     }
 
@@ -15,11 +13,12 @@ int request_handler(int current_floor, int target_floor) {
     {
         for (int b = 0; b < N_BUTTONS; b++)
         {
-            if ((f == 0 && b == BUTTON_HALL_DOWN) || 
-                (f == N_FLOORS-1 && b == BUTTON_HALL_UP)) {
+            if ((f == 0 && b == BUTTON_HALL_DOWN) || (f == N_FLOORS-1 && b == BUTTON_HALL_UP)) 
+            {
                 continue;
             }
-            if (status[f][b]) {
+            if (status[f][b]) 
+            {
                 any_pressed = 1;
                 break;
             }
@@ -30,7 +29,8 @@ int request_handler(int current_floor, int target_floor) {
         }
     }
 
-    if (!any_pressed) {
+    if (!any_pressed) 
+    {
         return target_floor;
     }
 
