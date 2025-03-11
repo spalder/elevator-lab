@@ -32,6 +32,7 @@ void elevator_init()
         }
 
         elevio_motorDirection(DIRN_STOP);
+        elevator.state = IDLE;
     }
 
     elevio_floorIndicator(elevator.current_floor);
