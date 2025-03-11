@@ -52,83 +52,70 @@ void elevator_move()
     }
 
     const int floor = elevio_floorSensor();
-    if (floor != -1 && floor != elevator.current_floor) {
-        elevator.current_floor = floor;
-        elevio_floorIndicator(elevator.current_floor);
-        printf("Elevator at floor %d\n", elevator.current_floor);
-        
-        // Check if we should stop at this floor (even if not the target floor)
-        int should_stop = 0;
-        
-        // Stop if this is our target floor
-        if (floor == elevator.target_floor) {
-            should_stop = 1;
-        } 
-        // Stop if moving up and there's an up call or cab call
-        else if (elevator.state == MOVING_UP && 
-                (status[floor][BUTTON_HALL_UP] || status[floor][BUTTON_CAB])) {
-            should_stop = 1;
-        }
-        // Stop if moving down and there's a down call or cab call
-        else if (elevator.state == MOVING_DOWN && 
-                (status[floor][BUTTON_HALL_DOWN] || status[floor][BUTTON_CAB])) {
-            should_stop = 1;
-        }
-        
-        if (should_stop) {
-            elevio_motorDirection(DIRN_STOP);
-            elevator.state = DOOR_OPEN;
-            elevator.door_open = 1;
-            elevio_doorOpenLamp(1);
-            printf("Stopping at floor %d, door opening\n", floor);
+
+    if (floor != -1) 
+    {
+        if (floor != elevator.current_floor)
+        {
+            elevator.current_floor = floor;
+            elevio_floorIndicator(elevator.current_floor);
+            printf("Elevator at floor %d\n", elevator.current_floor);
             
-            // Clear call buttons for this floor
-            clear_floor_button_lamps(floor);
-            
-            // Start door timer
-            timer_start(3);
-            return;
+            if (floor == elevator.target_floor) 
+            {
+                elevio_motorDirection(DIRN_STOP);
+                elevator.state = DOOR_OPEN;
+                elevator.door_open = 1;
+                elevio_doorOpenLamp(1);
+                printf("Stopping at floor %d, door opening\n", floor);
+
+                // Clear call buttons for this floor
+                clear_floor_button_lamps(floor);
+
+                // Start door timer
+                timer_start(3);
+                return;
+            }
         }
     }
 
-    // Check if we've reached the target floor
-    if (elevator.current_floor == elevator.target_floor && 
-       (elevator.state == MOVING_UP || elevator.state == MOVING_DOWN)) {
-        elevio_motorDirection(DIRN_STOP);
-        elevator.state = DOOR_OPEN;
-        elevator.door_open = 1;
-        elevio_doorOpenLamp(1);
-        printf("Arrived at target floor %d, door opening\n", elevator.current_floor);
-
-        clear_floor_button_lamps(elevator.current_floor);
-        
-        // Just start the timer, don't close door yet!
-        timer_start(3);
-        return;
+    else if (elevator.door_open)
+    {
+        elevator.door_open = 0; 
+        elevio_doorOpenLamp(0);
+        printf("Closing door while moving\n");
     }
-    
+
     // Check if door timer has expired
-    if (elevator.state == DOOR_OPEN && timer_stopped()) {
+    if (elevator.state == DOOR_OPEN && timer_stopped()) 
+    {
+        printf("Door closing\n");
         elevator.door_open = 0;
         elevio_doorOpenLamp(0);
         
         // Check for new destination after door closes
         int new_target = request_handler(elevator.current_floor, -1);
         
-        if (new_target != -1 && new_target != elevator.current_floor) {
+        if (new_target != -1 && new_target != elevator.current_floor) 
+        {
             // We have a new target
             elevator.target_floor = new_target;
             
-            if (new_target > elevator.current_floor) {
+            if (new_target > elevator.current_floor) 
+            {
                 elevator.state = MOVING_UP;
                 elevio_motorDirection(DIRN_UP);
                 printf("Moving up to floor %d\n", elevator.target_floor);
-            } else {
+            } 
+            else 
+            {
                 elevator.state = MOVING_DOWN;
                 elevio_motorDirection(DIRN_DOWN);
                 printf("Moving down to floor %d\n", elevator.target_floor);
             }
-        } else {
+        } 
+        else 
+        {
             // No new target, go to IDLE
             elevator.state = IDLE;
             elevator.target_floor = -1;
@@ -140,7 +127,6 @@ void elevator_move()
 void elevator_update()
 {
     const int next_target_floor = request_handler(elevator.current_floor, elevator.target_floor);
-    printf("Next target floor: %d, Current floor: %d, Current state: %d\n", next_target_floor, elevator.current_floor, elevator.state);
 
     if (next_target_floor == -1 || elevator.state == STOPPED) 
     {
@@ -148,8 +134,8 @@ void elevator_update()
         return;
     }
 
-    if (elevator.state == IDLE || 
-       (elevator.state == DOOR_OPEN && elevator.current_floor != next_target_floor)) 
+    /* Apply new next target if the elevator is ready */
+    if (elevator.state == IDLE || (elevator.state == DOOR_OPEN && elevator.current_floor != next_target_floor)) 
     {
         elevator.target_floor = next_target_floor;
         printf("New target floor: %d\n", elevator.target_floor);
@@ -166,13 +152,13 @@ void elevator_update()
         }
         else if (elevator.current_floor != -1) 
         {
-            if (elevator.target_floor > elevator.current_floor) 
+            if (elevator.target_floor > elevator.current_floor && timer_stopped()) 
             {
                 elevio_motorDirection(DIRN_UP);
                 elevator.state = MOVING_UP;
                 printf("Moving up to floor %d\n", elevator.target_floor);
             } 
-            else 
+            else if (elevator.target_floor < elevator.current_floor && timer_stopped()) 
             {
                 elevio_motorDirection(DIRN_DOWN);
                 elevator.state = MOVING_DOWN;
@@ -204,9 +190,12 @@ void handle_emergency_stop()
 
     elevio_stopLamp(0);
     
-    if (elevator.current_floor != -1) {
+    if (elevator.current_floor != -1) 
+    {
         timer_start(3);
-    } else {
+    } 
+    else 
+    {
         elevator.state = IDLE;
         elevator.target_floor = -1;
     }
@@ -216,7 +205,8 @@ void handle_obstruction()
 {
     printf("Obstruction detected, door held open\n");
     
-    while (elevio_obstruction()) {
+    while (elevio_obstruction()) 
+    {
         elevator.door_open = 1;
         elevio_doorOpenLamp(1);
         usleep(100000);
@@ -230,8 +220,7 @@ void clear_floor_button_lamps(int floor)
 {
     for (int b = 0; b < N_BUTTONS; b++) 
     {
-        if ((floor == 0 && b == BUTTON_HALL_DOWN) || 
-            (floor == N_FLOORS - 1 && b == BUTTON_HALL_UP)) 
+        if ((floor == 0 && b == BUTTON_HALL_DOWN) || (floor == N_FLOORS - 1 && b == BUTTON_HALL_UP)) 
         {
             continue;
         }
