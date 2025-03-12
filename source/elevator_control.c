@@ -125,7 +125,6 @@ void elevator_update()
 
     if (next_target_floor == -1 || elevator.state == STOPPED) 
     {
-        printf("No new target floor\n");
         return;
     }
 
@@ -133,7 +132,6 @@ void elevator_update()
     if (elevator.state == IDLE || (elevator.state == DOOR_OPEN && elevator.current_floor != next_target_floor)) 
     {
         elevator.target_floor = next_target_floor;
-        printf("New target floor: %d\n", elevator.target_floor);
         
         if (elevator.current_floor == elevator.target_floor) 
         {
