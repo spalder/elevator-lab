@@ -69,10 +69,8 @@ void elevator_move()
                 elevio_doorOpenLamp(1);
                 printf("Stopping at floor %d, door opening\n", floor);
 
-                // Clear call buttons for this floor
                 clear_floor_button_lamps(floor);
 
-                // Start door timer
                 timer_start(3);
                 return;
             }
@@ -83,22 +81,18 @@ void elevator_move()
     {
         elevator.door_open = 0; 
         elevio_doorOpenLamp(0);
-        printf("Closing door while moving\n");
     }
 
-    // Check if door timer has expired
     if (elevator.state == DOOR_OPEN && timer_stopped()) 
     {
         printf("Door closing\n");
         elevator.door_open = 0;
         elevio_doorOpenLamp(0);
         
-        // Check for new destination after door closes
         int new_target = request_handler(elevator.current_floor, -1);
         
         if (new_target != -1 && new_target != elevator.current_floor) 
         {
-            // We have a new target
             elevator.target_floor = new_target;
             
             if (new_target > elevator.current_floor) 
@@ -116,7 +110,6 @@ void elevator_move()
         } 
         else 
         {
-            // No new target, go to IDLE
             elevator.state = IDLE;
             elevator.target_floor = -1;
             printf("Door closed, elevator IDLE\n");
