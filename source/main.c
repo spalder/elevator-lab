@@ -5,13 +5,15 @@
 #include "driver/elevio.h"
 #include "elevator_control.h"
 
-int main() {
+int main() 
+{
     printf("=== Elevator Control System ===\n");
     printf("Press the stop button on the elevator panel to exit\n");
 
     elevator_init();
 
-    while (!elevio_stopButton()) {
+    while (!elevio_stopButton()) 
+    {
         status_set();
 
         elevator_update();

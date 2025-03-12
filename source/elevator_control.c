@@ -41,12 +41,14 @@ void elevator_init()
 
 void elevator_move()
 {
-    if (elevio_stopButton()) {
+    if (elevio_stopButton()) 
+    {
         handle_emergency_stop();
         return;
     }
 
-    if (elevio_obstruction() && (elevator.state == DOOR_OPEN || elevator.door_open)) {
+    if (elevio_obstruction() && (elevator.state == DOOR_OPEN || elevator.door_open)) 
+    {
         handle_obstruction();
         return;
     }
@@ -168,16 +170,19 @@ void handle_emergency_stop()
     elevator.state = STOPPED;
     elevio_stopLamp(1);
 
-    for (int f = 0; f < N_FLOORS; f++) {
+    for (int f = 0; f < N_FLOORS; f++) 
+    {
         clear_floor_button_lamps(f);
     }
 
-    if (elevator.current_floor != -1) {
+    if (elevator.current_floor != -1) 
+    {
         elevator.door_open = 1;
         elevio_doorOpenLamp(1);
     }
 
-    while (elevio_stopButton()) {
+    while (elevio_stopButton()) 
+    {
         usleep(100000);
     }
 
