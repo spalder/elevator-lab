@@ -1,0 +1,37 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0" version="26.0.12">
+  <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
+    <mxGraphModel dx="819" dy="523" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
+        <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
+        <mxCell id="zkfFHV4jXpPFQw0GAbJ--0" value="Elevator I/O " style="swimlane;fontStyle=2;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="200" y="100" width="357" height="286" as="geometry">
+            <mxRectangle x="230" y="140" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p64e4c_aH5iQV-RWetcK-6" value="&lt;div&gt;- sockfd: int&lt;/div&gt;&lt;div&gt;- sockmtx: pthread_mutex_t&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=default;fillColor=none;" vertex="1" parent="zkfFHV4jXpPFQw0GAbJ--0">
+          <mxGeometry y="26" width="357" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p64e4c_aH5iQV-RWetcK-0" value="&lt;div align=&quot;left&quot;&gt;+ elevio_init(void): void&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;+ elevio_motorDirection(dirn: MotorDirection): void&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;+ elevio_buttonLamp(floor: int, button: ButtonType, value: int): void&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;+ elevio_floorIndicator(floor: int): void&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;+ elevio_doorOpenLamp(value: int): void&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;+ elevio_stopLamp(value: int): void&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;+ elevio_callButton(floor: int, button: ButtonType): int&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;+ elevio_floorSensor(void): int&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;+ elevio_stopButton(void): int&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;+ elevio_obstruction(void): int&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="zkfFHV4jXpPFQw0GAbJ--0">
+          <mxGeometry y="66" width="357" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="zkfFHV4jXpPFQw0GAbJ--13" value="&lt;&lt;enum&gt;&gt; MotorDirection" style="swimlane;fontStyle=0;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=20;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;fontSize=11;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="200" y="400" width="130" height="90" as="geometry">
+            <mxRectangle x="340" y="380" width="170" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p64e4c_aH5iQV-RWetcK-3" value="&lt;div align=&quot;left&quot;&gt;DIRN_DOWN&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;DIRN_STOP&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;DIRN_UP&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="zkfFHV4jXpPFQw0GAbJ--13">
+          <mxGeometry y="20" width="130" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="zkfFHV4jXpPFQw0GAbJ--17" value="&lt;&lt;enum&gt;&gt; ButtonType" style="swimlane;fontStyle=2;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=20;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;fontSize=11;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="360" y="400" width="132" height="80" as="geometry">
+            <mxRectangle x="550" y="140" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p64e4c_aH5iQV-RWetcK-1" value="&lt;div align=&quot;left&quot;&gt;BUTTON_HALL_UP&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;BUTTON_HALL_DOWN&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;BUTTON_CAB&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="zkfFHV4jXpPFQw0GAbJ--17">
+          <mxGeometry y="20" width="132" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

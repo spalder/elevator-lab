@@ -1,0 +1,50 @@
+classDiagram
+    class elevio {
+        -int sockfd
+        -phtread_mutex_t sockmtx
+        +void elevio_init()
+        +void elevio_motorDirection(MotorDirection)
+        +void elevio_buttonLamp(int floor, ButtonType, int value)
+        +void elevio_floorIndicator(int floor)
+        +void elevio_doorOpenLamp(int value)
+        +void elevio_stopLamp(int value)
+        +int elevio_callButton(int floor, ButtonType)
+        +int elevio_floorSensor()
+        +int elevio_stopButton()
+        +int elevio_obstruction()
+    }
+
+    class elevator_control {
+        -ElevatorState current_state    
+        -int current_floor
+        +void elevator_init()
+        +void elevator_update()
+        +void elevator_move()
+    }
+
+    class ConfigLoader {
+        +void loadConfig(string filename, ValueCases cases)
+        +ValueCase createValueCase(string key, void* var, string format)
+        +EnumCase createEnumCase(string key, void* var, EnumMatchCases matchCases)
+    }
+
+    %% Enums
+    class MotorDirection {
+        <<enumeration>>
+        DIRN_DOWN = -1
+        DIRN_STOP = 0
+        DIRN_UP = 1
+    }
+
+    class ButtonType {
+        <<enumeration>>
+        BUTTON_HALL_UP = 0
+        BUTTON_HALL_DOWN = 1
+        BUTTON_CAB = 2
+    }
+
+    %% Relationships
+    ElevatorController --> Elevator : uses
+    ElevatorController --> ConfigLoader : uses
+    Elevator --> MotorDirection : uses
+    Elevator --> ButtonType : uses
