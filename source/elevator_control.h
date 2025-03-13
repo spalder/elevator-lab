@@ -1,3 +1,8 @@
+/**
+ * @file elevator_control.h
+ * @brief Elevator control system.
+ */
+
 #ifndef ELEVATOR_CONTROL_H
 #define ELEVATOR_CONTROL_H
 
@@ -8,19 +13,27 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+/**
+ * @brief Elevator state enumeration.
+ * @details This enumeration defines the possible states of the elevator.
+ */
 typedef enum {
-    IDLE,
-    MOVING_UP,
-    MOVING_DOWN,
-    DOOR_OPEN,
-    STOPPED
+    IDLE,        /**< Idle state */
+    MOVING_UP,   /**< Moving up state */
+    MOVING_DOWN, /**< Moving down state */
+    DOOR_OPEN,   /**< Door open state */
+    STOPPED      /**< Stopped state */
 } ElevatorState;
 
+/**
+ * @brief Elevator structure.
+ * @details This structure holds the current state, floor, target floor, and door status of the elevator.
+ */
 typedef struct {
-    ElevatorState state;
-    int current_floor;
-    int target_floor;
-    int door_open;
+    ElevatorState state; /**< Elevator state */
+    int current_floor;   /**< Current floor */
+    int target_floor;    /**< Target floor */
+    int door_open;       /**< Door open status */
 } Elevator;
 
 /**
@@ -60,7 +73,7 @@ void handle_obstruction();
 /**
  * @brief Clear the floor button lamps.
  * @details Clear the floor button lamps for a given floor.
- * @param[in] floor 
+ * @param floor
  * @return void
  */
 void clear_floor_button_lamps(int floor);
